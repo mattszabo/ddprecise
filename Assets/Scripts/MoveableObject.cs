@@ -28,6 +28,7 @@ public class MoveableObject : MonoBehaviour {
 		}
 		if (GvrController.ClickButtonUp) {
 			InactivateObject ();
+			ThrowObject ();
 		}
 	}
 
@@ -49,10 +50,20 @@ public class MoveableObject : MonoBehaviour {
 		transform.position = ray.GetPoint (6.5f);
 	}
 
-	public void CalculateObjectVelocity() {
+	private void CalculateObjectVelocity() {
 		objectVelocity = (transform.position - objectLastPosition) / Time.fixedDeltaTime;
 		objectLastPosition = transform.position;
 	}
-		
+
+	public void ThrowObject() {
+		float velocityMultiplier = 2.0f;
+		Rigidbody rb = GetComponent<Rigidbody> ();
+		rb.AddForce (
+			objectVelocity.x * velocityMultiplier,
+			objectVelocity.y * velocityMultiplier,
+			objectVelocity.z * velocityMultiplier,
+			ForceMode.Force
+		);
+	}
 		
 }

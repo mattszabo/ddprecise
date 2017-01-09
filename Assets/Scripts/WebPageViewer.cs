@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ImageViewer : MonoBehaviour {
+public class WebPageViewer : MonoBehaviour {
 
 	public string url = "http://www.google.com";
 
@@ -11,4 +11,5 @@ public class ImageViewer : MonoBehaviour {
 		Renderer renderer = GetComponent<Renderer>();
 		renderer.material.mainTexture = www.texture;
 	}
+		
 }
