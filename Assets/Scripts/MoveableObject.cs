@@ -3,32 +3,30 @@ using System.Collections;
 
 public class MoveableObject : MonoBehaviour {
 
-	private bool isActive;
+	private bool isPickedUp;
 	private bool isHighlighted;
+	private bool isGravityEnabled;
 
 	private GameObject reticle;
+	private Rigidbody rb;
+
 	private Vector3 objectLastPosition;
 	private Vector3 objectVelocity;
 
-	// Use this for initialization
 	void Start () {
-		isActive = false;
+		isPickedUp = false;
 		isHighlighted = false;
 		reticle = GameObject.Find ("GvrReticlePointer");
+		rb = GetComponent<Rigidbody> ();
+		isGravityEnabled = rb.useGravity;
 	}
-
-	// Update is called once per frame
+		
 	void Update () {
-		if (isActive) {
+		if (isPickedUp) {
 			FollowPointer ();
-			CalculateObjectVelocity ();
-		}
-		if (GvrController.ClickButtonDown && isHighlighted) {
-			ActivateObject();
-		}
-		if (GvrController.ClickButtonUp) {
-			InactivateObject ();
-			ThrowObject ();
+			if (isGravityEnabled) {
+				CalculateObjectVelocity ();
+			}
 		}
 	}
 
@@ -36,18 +34,21 @@ public class MoveableObject : MonoBehaviour {
 		isHighlighted = true;
 	}
 
-	public void ActivateObject() {
-		isActive = true;
+	public void PickUpObject() {
+		isPickedUp = true;
 	}
 
-	public void InactivateObject() {
+	public void LetGoOfObject() {
 		isHighlighted = false;
-		isActive = false;
+		isPickedUp = false;
+		if (isGravityEnabled) {
+			AddMomentumToObject ();
+		}
 	}
 
 	public void FollowPointer() {
 		Ray ray = new Ray (reticle.transform.position, reticle.transform.forward);
-		transform.position = ray.GetPoint (6.5f);
+		transform.position = ray.GetPoint (7.0f);
 	}
 
 	private void CalculateObjectVelocity() {
@@ -55,9 +56,8 @@ public class MoveableObject : MonoBehaviour {
 		objectLastPosition = transform.position;
 	}
 
-	public void ThrowObject() {
+	public void AddMomentumToObject() {
 		float velocityMultiplier = 2.0f;
-		Rigidbody rb = GetComponent<Rigidbody> ();
 		rb.AddForce (
 			objectVelocity.x * velocityMultiplier,
 			objectVelocity.y * velocityMultiplier,
