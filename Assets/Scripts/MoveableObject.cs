@@ -16,7 +16,7 @@ public class MoveableObject : MonoBehaviour {
 	void Start () {
 		isPickedUp = false;
 		rb = GetComponent<Rigidbody> ();
-		isGravityEnabled = rb.useGravity;
+		isGravityEnabled = (rb) ? rb.useGravity : false;
 	}
 		
 	void Update () {
