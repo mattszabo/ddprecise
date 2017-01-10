@@ -6,7 +6,6 @@ public class MoveableObject : MonoBehaviour {
 	public GameObject pointer;
 
 	private bool isPickedUp;
-	private bool isHighlighted;
 	private bool isGravityEnabled;
 
 	private Rigidbody rb;
@@ -16,10 +15,8 @@ public class MoveableObject : MonoBehaviour {
 
 	void Start () {
 		isPickedUp = false;
-		isHighlighted = false;
 		rb = GetComponent<Rigidbody> ();
 		isGravityEnabled = rb.useGravity;
-		objectLastPosition = pointer.transform.position;
 	}
 		
 	void Update () {
@@ -31,16 +28,11 @@ public class MoveableObject : MonoBehaviour {
 		}
 	}
 
-	public void HighlightObject() {
-		isHighlighted = true;
-	}
-
 	public void PickUpObject() {
 		isPickedUp = true;
 	}
 
 	public void LetGoOfObject() {
-		isHighlighted = false;
 		isPickedUp = false;
 		if (isGravityEnabled) {
 			ApplyMomentumToObject ();
