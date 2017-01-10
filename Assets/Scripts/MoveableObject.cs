@@ -39,7 +39,7 @@ public class MoveableObject : MonoBehaviour {
 		}
 	}
 
-	public void FollowPointer() {
+	private void FollowPointer() {
 		Ray ray = new Ray (pointer.transform.position, pointer.transform.forward);
 		transform.position = ray.GetPoint (7.0f);
 	}
@@ -49,7 +49,7 @@ public class MoveableObject : MonoBehaviour {
 		objectLastPosition = transform.position;
 	}
 
-	public void ApplyMomentumToObject() {
+	private void ApplyMomentumToObject() {
 		float velocityMultiplier = 2.0f;
 		rb.AddForce (
 			objectVelocity.x * velocityMultiplier,
