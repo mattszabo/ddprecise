@@ -3,11 +3,12 @@ using System.Collections;
 
 public class MoveableObject : MonoBehaviour {
 
+	public GameObject pointer;
+
 	private bool isPickedUp;
 	private bool isHighlighted;
 	private bool isGravityEnabled;
 
-	private GameObject reticle;
 	private Rigidbody rb;
 
 	private Vector3 objectLastPosition;
@@ -16,9 +17,9 @@ public class MoveableObject : MonoBehaviour {
 	void Start () {
 		isPickedUp = false;
 		isHighlighted = false;
-		reticle = GameObject.Find ("GvrReticlePointer");
 		rb = GetComponent<Rigidbody> ();
 		isGravityEnabled = rb.useGravity;
+		objectLastPosition = pointer.transform.position;
 	}
 		
 	void Update () {
@@ -42,12 +43,12 @@ public class MoveableObject : MonoBehaviour {
 		isHighlighted = false;
 		isPickedUp = false;
 		if (isGravityEnabled) {
-			AddMomentumToObject ();
+			ApplyMomentumToObject ();
 		}
 	}
 
 	public void FollowPointer() {
-		Ray ray = new Ray (reticle.transform.position, reticle.transform.forward);
+		Ray ray = new Ray (pointer.transform.position, pointer.transform.forward);
 		transform.position = ray.GetPoint (7.0f);
 	}
 
@@ -56,7 +57,7 @@ public class MoveableObject : MonoBehaviour {
 		objectLastPosition = transform.position;
 	}
 
-	public void AddMomentumToObject() {
+	public void ApplyMomentumToObject() {
 		float velocityMultiplier = 2.0f;
 		rb.AddForce (
 			objectVelocity.x * velocityMultiplier,
